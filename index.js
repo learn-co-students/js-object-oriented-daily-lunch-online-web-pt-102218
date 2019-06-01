@@ -30,6 +30,12 @@ class Meal {
 
     store.meals.push(this); 
   }
+  deliveries() {
+    return store.deliveries.filter(delivery=> delivery.mealId === this.id);
+  }
+  customers() {
+    return store.deliveries.map(delivery=> delivery.customer().uniqu
+    )}; 
 }
 
 class Customer {
@@ -44,12 +50,13 @@ class Customer {
     return store.deliveries.filter(delivery => 
      delivery.customerId === this.id )
   }
-  meals() {
-    return this.deliveries().filter(delivery => {
-      return delivery.mealId === delivery.id 
-    });
+  customers() {
+    return store.customers.filter(customer => customer.neighborhoodId === this.id);
   }
-} 
+  meals() {
+    return store.deliveries.filter(delivery => delivery.meal()); 
+  }
+}
 class Delivery {
   constructor(mealId, neighborhoodId, customerId) {
     this.id = ++ deliveryId; 
