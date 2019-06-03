@@ -20,6 +20,11 @@ class Neighborhood {
   customers() {
     return store.customers.filter(customer => customer.neighborhoodId === this.id);
   }
+  meals() {
+    const allMeals = this.customers().map(customer => customer.meals());
+    const merged = [].concat.apply([], allMeals);
+    return [...new Set(merged)];
+  }
 }
 
 class Meal {
@@ -34,8 +39,12 @@ class Meal {
     return store.deliveries.filter(delivery=> delivery.mealId === this.id);
   }
   customers() {
-    return store.deliveries.map(delivery=> delivery.customer().uniqu
-    )}; 
+    const ourDelieveries = this.deliveries().filter(delivery=> delivery.customer())
+    return ourDelieveries.map(delivery=> delivery.customer()); 
+    }; 
+  static byPrice() {
+    return store.meals.sort( (a, b) => a.price - b.price).reverse();
+  }
 }
 
 class Customer {
@@ -54,7 +63,10 @@ class Customer {
     return store.customers.filter(customer => customer.neighborhoodId === this.id);
   }
   meals() {
-    return store.deliveries.filter(delivery => delivery.meal()); 
+    return this.deliveries().map(delivery => delivery.meal()); 
+  }
+  totalSpent() {
+    return this.meals().reduce((total, meal) => (total += meal.price), 0);
   }
 }
 class Delivery {
